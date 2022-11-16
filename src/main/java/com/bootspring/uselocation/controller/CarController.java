@@ -5,14 +5,14 @@ import com.bootspring.uselocation.model.Car;
 import com.bootspring.uselocation.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Objects;
 
-@RestController
+@Controller
 @RequestMapping("/cars")
 public class CarController {
     @Autowired
@@ -22,8 +22,9 @@ public class CarController {
     }
 
     @GetMapping()
-    public List<Car> getAllCars() {
-        return carService.getAllCars();
+    public String getAllCars(Model model) {
+        model.addAttribute("cars",carService.getAllCars());
+        return "index";
     }
 
     @GetMapping("/{id}")
