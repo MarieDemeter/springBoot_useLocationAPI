@@ -23,11 +23,11 @@ public class CarService {
         return this.restTemplate.getForObject("http://localhost:8080/api/cars", List.class);
     }
 
-    public Car getCar(@PathVariable int id) {
+    public Car getCar(int id) {
         return this.restTemplate.getForObject("http://localhost:8080/api/cars/"+id, Car.class);
     }
 
-    public Car addCar(@RequestBody Car newCar) {
+    public Car addCar(Car newCar) {
         if (!Objects.equals(newCar.getModel(), "") && !Objects.equals(newCar.getBrand(), "") && !Objects.equals(newCar.getColor(), "")) {
             return this.restTemplate.postForObject("http://localhost:8080/api/cars/", newCar, Car.class);
         } else {
@@ -35,7 +35,7 @@ public class CarService {
         }
     }
 
-    public void update(@PathVariable int id, @RequestBody Car newCar) {
+    public void update(int id, Car newCar) {
         if (!Objects.equals(newCar.getModel(), "") && !Objects.equals(newCar.getBrand(), "") && !Objects.equals(newCar.getColor(), "")) {
             Car carToUpdate = getCar(id);
             this.restTemplate.put("http://localhost:8080/api/cars/"+id, newCar, carToUpdate);

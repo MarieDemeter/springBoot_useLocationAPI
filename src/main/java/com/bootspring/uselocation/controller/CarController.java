@@ -23,19 +23,21 @@ public class CarController {
 
     @GetMapping()
     public String getAllCars(Model model) {
-        model.addAttribute("cars",carService.getAllCars());
+        model.addAttribute("cars", this.carService.getAllCars());
+        model.addAttribute("car",new Car());
         return "index";
     }
 
     @GetMapping("/{id}")
     public Car getCar(@PathVariable int id) {
-        return carService.getCar(id);
+        return this.carService.getCar(id);
     }
 
     @PostMapping()
-    public Car addCar(@RequestBody Car newCar) {
+    public String addCar(@ModelAttribute Car newCar, Model model) {
         try {
-            return carService.addCar(newCar);
+            this.carService.addCar(newCar);
+            return getAllCars(model);
         } catch (MissingParametersException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
@@ -44,7 +46,7 @@ public class CarController {
     @PutMapping("/{id}")
     public Car updateCar(@PathVariable int id, @RequestBody Car newCar) {
         try {
-            carService.update(id,newCar);
+            this.carService.update(id,newCar);
             return getCar(id);
         } catch (MissingParametersException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -54,7 +56,7 @@ public class CarController {
     @DeleteMapping("/{id}")
     public Car deleteCar(@PathVariable int id) {
         Car car = getCar(id);
-        carService.delete(id);
+        this.carService.delete(id);
         return car;
     }
 
